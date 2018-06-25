@@ -18,7 +18,7 @@
     "hot-import": "^0.1.0",
     "mime": "^2.2.0",
     "needle": "^2.2.1",
-    "puppeteer": "^1.2.0",
+    "puppeteer": "^1.5.0",
     "qiniu": "^7.1.7",
     "raven": "^2.2.0",
     "read-pkg-up": "^3.0.0",

@@ -69,7 +69,7 @@ async function saveMediaFile(message: MediaMessage) {
       const r_qiniu = await uploadToQiniu(netStream, file_path)
       await message.say(`qiniu response file path ${r_qiniu}`)
       const re = await axios.post(config.upload_file_url, {path: r_qiniu})
-      await message.say(`点击 ${re.data.file_path}`)
+      await message.say(`点击 ${re.data.path}`)
     } catch (e) {
       message.say(`error:${e}`)
       console.error('stream error:', e)
