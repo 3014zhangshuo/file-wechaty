@@ -2,6 +2,7 @@ import * as qrcodeTerminal  from 'qrcode-terminal'
 import { config } from './config'
 import { Wechaty, Contact, MediaMessage } from 'wechaty'
 
+// wondercv.wechaty.json store session
 const bot = Wechaty.instance({profile: 'wondercv'})
 const axios = require('axios')
 const qiniu = require('qiniu')
