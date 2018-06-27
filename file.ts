@@ -68,7 +68,9 @@ async function saveMediaFile(message: MediaMessage) {
       const netStream = await message.readyStream()
       const file_path = `wechaty_upload/${timestamp}/${user}/${filename}`
       const r_qiniu = await uploadToQiniu(netStream, file_path)
-      await message.say(`qiniu response file path ${r_qiniu}`)
+      if (config.debug_mode) {
+        await message.say(`qiniu response file path ${r_qiniu}`)
+      }
       const re = await axios.post(config.upload_file_url, {path: r_qiniu})
       await message.say(`点击 ${re.data.path}`)
     } catch (e) {
