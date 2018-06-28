@@ -1,0 +1,10 @@
+export class Config {
+  public upload_file_url = 'http://xx'
+  public notification_url = 'http://xx'
+  public qiniu_access_key = 'xx'
+  public qiniu_secret_key = 'xx'
+  public qiniu_bucket = 'xx'
+  public debug_mode = true
+}
+
+export const config = new Config()
