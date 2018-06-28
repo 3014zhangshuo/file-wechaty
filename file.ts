@@ -33,7 +33,7 @@ bot
     logMsg = 'received `friend` event from ' + contact.get('name')
     fileHelper.say(logMsg)
     console.log(logMsg)
-    
+
     if (request) {
       request.accept()
       contact.say('hello')
