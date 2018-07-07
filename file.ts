@@ -1,6 +1,6 @@
 import * as qrcodeTerminal  from 'qrcode-terminal'
 import { config } from './config'
-import { Wechaty, Contact, MediaMessage } from 'wechaty'
+import { Wechaty, Contact, MediaMessage, FriendRequest } from 'wechaty'
 
 // wondercv.wechaty.json store session
 const bot = Wechaty.instance({profile: 'wondercv'})
@@ -33,7 +33,9 @@ bot
     logMsg = 'received `friend` event from ' + contact.get('name')
     fileHelper.say(logMsg)
     console.log(logMsg)
-
+    let fr = new wechaty.FriendRequest()
+    fr.send(contact, 'hello')
+    contact.say('hello')
     if (request) {
       request.accept()
       contact.say('hello')
