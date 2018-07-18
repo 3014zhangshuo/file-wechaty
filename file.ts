@@ -80,6 +80,12 @@ async function saveMediaFile(message: MediaMessage) {
       await message.say('正在上传文件… 请稍等')
 
       const netStream = await message.readyStream()
+      const filesize = await fileSize(netStream)
+
+      if (filesize >= 2000) {
+        return message.say('上传文件过大，请小于2 M')
+      }
+
       const file_path = `wechaty_upload/${timestamp}/${user}/${filename}`
       const r_qiniu = await uploadToQiniu(netStream, file_path)
 
@@ -120,4 +126,26 @@ function uploadToQiniu(stream, filePath) {
       }
     })
   })
+}
+
+function fileSize(steam) {
+  var dataLength = 0;
+  return new Promise(
+    function (resolve, reject) {
+      steam.on('data', function (chunk) {
+        dataLength += chunk.length
+      })
+      .on('end', function () {
+        if (dataLength > 0) {
+          resolve(bytesToKB(dataLength))
+        } else {
+          reject(2000)
+        }
+      })
+    }
+  )
+}
+
+function bytesToKB(bytes) {
+  Math.round(bytes / 1024, 2)
 }
