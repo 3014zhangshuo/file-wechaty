@@ -2,7 +2,6 @@ import * as path from 'path'
 import * as qrcodeTerminal  from 'qrcode-terminal'
 import { config } from './config'
 import { Wechaty, Contact, MediaMessage } from 'wechaty'
-
 // wondercv.wechaty.json store session
 const bot = Wechaty.instance({profile: 'wondercv'})
 const axios = require('axios')
@@ -53,17 +52,17 @@ bot
 .on('message', async message => {
   console.log(`RECV: ${message}`)
 
-  if (!message.self()) {
-    if (/电脑/.test(message)) {
-      await message.say("超级简历数据云存储，电脑手机可同步编辑！\n\n网址：wondercv.com\n或百度搜索 超级简历")
-    } else {
-      await message.say("目前仅支持中文简历导入，文件应为 pdf 或 doc 格式，直接发送给我即可上传\n如有其它问题请添加公众号咨询~")
-      await message.say(new MediaMessage(WONDERCV_PUB_IMAGE_FILE))
-    }
-  }
-
   if (message instanceof MediaMessage) {
     saveMediaFile(message)
+  } else {
+    if (!message.self()) {
+      if (/电脑/.test(message)) {
+        await message.say("超级简历数据云存储，电脑手机可同步编辑！\n\n网址：wondercv.com\n或百度搜索 超级简历")
+      } else {
+        await message.say("目前仅支持中文简历导入，文件应为 pdf 或 doc 格式，直接发送给我即可上传\n如有其它问题请添加公众号咨询")
+        await message.say(new MediaMessage(WONDERCV_PUB_IMAGE_FILE))
+      }
+    }
   }
 })
 .init()
@@ -74,14 +73,16 @@ async function saveMediaFile(message: MediaMessage) {
   const filename = message.filename()
   const timestamp = new Date().getTime()
 
-  console.log('local filename: ' + filename)
+  console.log(`filename: ${filename}`)
 
   if ((/(.txt|.doc|.docx|.word|.pdf)$/).test(filename)) {
     try {
       await message.say('正在上传文件… 请稍等')
+
       const netStream = await message.readyStream()
       const file_path = `wechaty_upload/${timestamp}/${user}/${filename}`
       const r_qiniu = await uploadToQiniu(netStream, file_path)
+
       if (config.debug_mode) {
         await message.say(`qiniu response file path ${r_qiniu}`)
       }
@@ -92,7 +93,7 @@ async function saveMediaFile(message: MediaMessage) {
       console.error('stream error:', e)
     }
   } else {
-    message.say(`文件：${filename}，格式错误，请确保上传文件格式为【doc|docx|word|pdf】`)
+    message.say('文件格式错误，目前仅支持中文简历导入，文件应为 pdf 或 doc 格式，请重新发送')
   }
 }
 
