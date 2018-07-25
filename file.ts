@@ -38,9 +38,11 @@ bot
     logMsg = 'received `friend` event from ' + contact.get('name')
     fileHelper.say(logMsg)
 
-    if (request) {
-      request.accept()
-      contact.say('hello')
+    if (request.hello) {
+        logMsg = 'accepted because verify messsage is "ding"'
+        request.accept()
+    } else {
+        logMsg = 'not auto accepted, because verify message is: ' + request.hello
     }
   } catch (e) {
     logMsg = e.message
