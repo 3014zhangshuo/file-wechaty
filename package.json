@@ -24,7 +24,7 @@
     "read-pkg-up": "^3.0.0",
     "request": "^2.83.0",
     "retry-promise": "^1.0.0",
-    "rx-queue": "^0.3.1",
+    "rx-queue": "^0.3.14",
     "rxjs": "^6.1.0",
     "state-switch": "^0.4.1",
     "watchdog": "^0.3.0",
