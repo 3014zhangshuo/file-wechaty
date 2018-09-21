@@ -49,6 +49,10 @@ bot
   }
 })
 .on('message', async message => {
+  const contactName = message.from().name()
+  console.log(`CONTACT_NAME：${contactName}`)
+  if (contactName == '微信团队') { return }
+
   console.log(`RECV: ${message}`)
 
   if (message instanceof MediaMessage) {
