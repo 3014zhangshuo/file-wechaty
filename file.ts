@@ -28,32 +28,25 @@ bot
   console.log(`${url}\n[${code}] Scan QR Code in above url to login: `)
 })
 .on('login', user => console.log(`${user} logined`))
+.on('logout', user => console.log(`Bot ${user.name()} logouted`))
 .on('friend', async (contact, request) => {
   const contactList = await Contact.findAll()
   const friendsCount = contactList.filter(c => !!c.personal()).length
-
-  const fileHelper = Contact.load('filehelper')
-  if (friendsCount > 4900) {
+  console.log(`friendsCount: ${friendsCount}`)
+  if (friendsCount >= 5000) {
     await axios.post(config.notification_url, { amount: friendsCount } )
-  }
-  let logMsg
+  } else {
+    let logMsg
 
-  try {
-    logMsg = 'received `friend` event from ' + contact.get('name')
-    fileHelper.say(logMsg)
-
-    if (request.hello) {
-        logMsg = 'accepted because verify messsage is "ding"'
+    try {
+      if (request) {
         request.accept()
-    } else {
-        logMsg = 'not auto accepted, because verify message is: ' + request.hello
+      }
+    } catch (e) {
+      logMsg = e.message
+      console.log(logMsg)
     }
-  } catch (e) {
-    logMsg = e.message
-    console.log(logMsg)
   }
-
-  fileHelper.say(logMsg)
 })
 .on('message', async message => {
   console.log(`RECV: ${message}`)
